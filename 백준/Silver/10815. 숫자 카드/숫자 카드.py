@@ -1,22 +1,22 @@
-def func(nums, check_num, start, end):
-    if check_num == nums[start] or check_num == nums[end]:
-        return 1
-    if start+1 == end:
-        return 0
-    if check_num > nums[start] and check_num <= nums[(end+start)//2]:
-        return func(nums, check_num, start, (end+start)//2)
-    elif check_num > nums[(end+start)//2] and check_num < nums[end]:
-        return func(nums, check_num, (end+start)//2, end)
+n = int(input())
+lst = list(map(int, input().split()))
+lst.sort()
+m = int(input())
+check = list(map(int, input().split()))
+result = []
+for c in check:
+    front, end = 0, n - 1
+    while front + 1 != end:
+        mid = (front + end) // 2
+        if lst[mid] < c:
+            front = mid
+        elif lst[mid] > c:
+            end = mid
+        else:
+            front = mid
+            break
+    if lst[front] == c or lst[end] == c:
+        result.append(1)
     else:
-        return 0
-
-
-N = int(input())
-nums = list(map(int, input().split()))
-M = int(input())
-check_list = list(map(int, input().split()))
-nums.sort()
-
-answer = []
-for c in check_list:
-    print(func(nums, c, 0, N-1), end=' ')
+        result.append(0)
+print(*result)
