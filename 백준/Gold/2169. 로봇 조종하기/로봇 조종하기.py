@@ -8,12 +8,16 @@ for j in range(1, m):
     board[0][j] += board[0][j-1]
 
 for i in range(1, n):
-    left = [board[i][j]+board[i-1][j] for j in range(m)]
-    right = left.copy()
+    toright = board[i].copy()
+    toleft = board[i].copy()
+    toright[0] += board[i-1][0]
+    toleft[-1] += board[i-1][-1]
     for j in range(1, m):
-        left[j] = max(left[j], left[j-1]+board[i][j])
-        right[m-1-j] = max(right[m-1-j], right[m-j]+board[i][m-j-1])
+        toright[j] += max(board[i-1][j], toright[j-1])
+    for j in range(m-2, -1, -1):
+        toleft[j]  += max(board[i-1][j], toleft[j+1])
+
     for j in range(m):
-        board[i][j] = max(left[j], right[j])
+        board[i][j] = max(toleft[j], toright[j])
 
 print(board[-1][-1])
