@@ -1,17 +1,28 @@
-n = input()
+import sys
+input = sys.stdin.readline
+n = int(input())
 nums = list(map(int, input().split()))
-m = input()
-cl = list(map(int, input().split()))
-
-dic = {}
-for num in nums:
-    if num in dic:
-        dic[num] = dic[num]+1
-    else:
-        dic[num] = 1
-
-for c in cl:
-    if c not in dic:
-        print(0, end = ' ')
-    else:
-        print(dic[c], end = ' ')
+nums.sort()
+m = int(input())
+check = list(map(int, input().split()))
+res = []
+for c in check:
+    start = 0
+    end = n-1
+    while start <= end:
+        mid = (start + end) // 2
+        if c < nums[mid]:
+            end = mid-1
+        else:
+            start = mid+1
+    tmp = end
+    start = 0
+    end = n-1
+    while start <= end:
+        mid = (start+end) // 2
+        if c <= nums[mid]:
+            end = mid-1
+        else:
+            start = mid+1
+    res.append(tmp-end)
+print(*res)
