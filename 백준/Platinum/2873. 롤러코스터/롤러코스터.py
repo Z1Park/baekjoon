@@ -1,43 +1,35 @@
 import sys
-input = sys.stdin.readline
+input = lambda : sys.stdin.readline()
+n, m = map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(n)]
 
-def move(idx, r, c, d1, d2, d3, ind):
-    i = idx
+def move(r, c, dir, dir1, dir2, final):
     flag = True
-    while i < r:
-        j = 0
-        while j < c:
-            if flag:
-                print(d1, end = '')
-            else:
-                print(d2, end = '')
-            j += 1
-        if i < r - ind:
-            print(d3, end = '')
-        i += 1
-        flag = not flag
-
-r, c = map(int, input().split())
-lst = [list(map(int, input().split())) for _ in range(r)]
-if r % 2 == 1:
-    move(0, r, c - 1, "R", "L", "D", 1)
-elif c % 2 == 1:
-    move(0, c, r - 1, "D", "U", "R", 1)
-else:
-    m = 1000
     for i in range(r):
-        for j in range(c):
-            if (i + j) % 2 == 1 and lst[i][j] < m:
-                m = lst[i][j]
-                x, y = i, j
-    move(0, y - y % 2, r - 1, "D", "U", "R", 0)
-    move(0, x, 1, "R", "L", "D", 0)
-    if x != r - 1:
-        print("D", end = '')
-    if y % 2 == 0:
-        move(x + 1, r, 1, "L", "R", "D", 1)
+        for j in range(c-1):
+            print(dir1 if flag else dir2, end='')
+        flag = not flag
+        if i != r-1 or final:
+            print(dir, end='')
+
+if n % 2 == 1:
+    move(n, m, 'D', 'R', 'L', False)
+else:
+    if m % 2 == 1:
+        move(m, n, 'R', 'D', 'U', False)
     else:
-        move(x + 1, r, 1, "R", "L", "D", 1)
-    if y + 1 - y % 2 != c - 1:
-        print("R", end = '')
-    move(y + 1, c - 1 + y % 2, r - 1, "U", "D", "R", 1)
+        min_val = 1001
+        for i in range(n):
+            for j in range(m):
+                if (i+j)%2 == 1 and min_val > arr[i][j]:
+                    min_val = arr[i][j]
+                    r, c = i, j
+        move(c-c%2, n, 'R', 'D', 'U', True)
+        move(r-r%2, 2, 'D', 'R', 'L', True)
+        print('DR' if r%2 == 0 else 'RD', end='')
+        if r+(2-r%2) != n:
+            print('D', end='')
+        move(n-r-(2-r%2), 2, 'D', 'L', 'R', False)
+        if c+(2-c%2) != m:
+            print('R', end='')
+        move(m-c-(2-c%2), n, 'R', 'U', 'D', False)
