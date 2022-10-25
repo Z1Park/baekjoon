@@ -1,21 +1,18 @@
 n, m = map(int, input().split())
-lst = [int(input()) for _ in range(n)]
-end = lst[0]
-front = 0
-count = n
-while end != front + 1:
-    tmp = (front + end) // 2
+log = [int(input()) for _ in range(n)]
+
+def check(length):
     count = 0
-    for l in lst:
-        count += l // tmp
-    if count < m:
-        end = tmp
+    for l in log:
+        count += l // length
+    return count
+
+start = 1
+end = max(log)
+while start <= end:
+    mid = (start + end) // 2
+    if check(mid) < m:
+        end = mid - 1
     else:
-        front = tmp
-count = 0
-for l in lst:
-    count += l // end
-if count == m:
-    print(end)
-else:
-    print(front)
+        start = mid + 1
+print(end)
