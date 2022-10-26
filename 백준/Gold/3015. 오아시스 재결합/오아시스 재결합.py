@@ -1,23 +1,22 @@
 import sys
-input = sys.stdin.readline
-
+input = lambda : sys.stdin.readline()
 n = int(input())
-lst = [int(input()) for _ in range(n)]
 stk = []
-count = 0
-for l in lst:
-    while stk and stk[-1][0] < l:
-        count += stk.pop()[1]
+cnt = 0
+for _ in range(n):
+    curr = int(input())
+    while stk and stk[-1][0] < curr:
+        cnt += stk.pop()[1]
     
     if not stk:
-        stk.append([l, 1])
-    elif stk[-1][0] > l:
-        count += 1
-        stk.append([l, 1])
+        stk.append((curr, 1))
+    elif stk[-1][0] > curr:
+        cnt += 1
+        stk.append((curr, 1))
     else:
         tmp = stk.pop()[1]
-        count += tmp
+        cnt += tmp
         if stk:
-            count += 1
-        stk.append([l, tmp + 1])
-print(count)
+            cnt += 1
+        stk.append((curr, tmp+1))
+print(cnt)
