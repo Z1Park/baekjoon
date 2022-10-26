@@ -1,34 +1,26 @@
 import sys
-input = sys.stdin.readline
-
-A = list(input())
-A = A[:-1]
-rA = list(reversed(A))
-T = input()
-T = T[:-1]
-la = len(A)
-lt = len(T)
-flag = 0
+from collections import deque
+input = lambda : sys.stdin.readline().rstrip()
+find = list(input())
+rev_find = list(reversed(find))
+txt = list(input())
+txt = deque(txt, len(txt))
 left = []
 right = []
-l_idx = 0
-r_idx = lt - 1
-while (l_idx <= r_idx):
-    if flag == 0:
-        left.append(T[l_idx])
-        l_idx += 1
-        tmp = left[-la:]
-        if left[-la:] == A:
-            left[-la:] = []
-            flag = 1
+flag = True
+while txt:
+    if flag:
+        left.append(txt.popleft())
+        if find == left[-len(find):]:
+            left[-len(find):] = []
+            flag = not flag
     else:
-        right.append(T[r_idx])
-        r_idx -= 1
-        if right[-la:] == rA:
-            right[-la:] = []
-            flag = 0
+        right.append(txt.pop())
+        if rev_find == right[-len(find):]:
+            right[-len(find):] = []
+            flag = not flag
 while right:
     left.append(right.pop())
-    if left[-la:] == A:
-        left[-la:] = []
+    if find == left[-len(find):]:
+        left[-len(find):] = []
 print(''.join(left))
