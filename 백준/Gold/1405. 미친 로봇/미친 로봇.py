@@ -1,20 +1,25 @@
-count, e, w, s, n = map(int, input().split())
-lst = [[e/100, 0, 1], [w/100, 0, -1], [s/100, 1, 0], [n/100, -1, 0]]
-total = 0
+import sys
+input = lambda : sys.stdin.readline().rstrip()
+nums = list(map(int, input().split()))
+n = nums[0]
+prob = [num/100 for num in nums[1:]]
+board = [[False for _ in range(2*n+1)] for _ in range(2*n+1)]
+dr = [0, 0, 1, -1]
+dc = [1, -1, 0, 0]
 
-arr = [[0 for a in range(31)] for b in range(31)]
-
-def dfs(x, y, c, p):
-    global arr, total
-    arr[x][y] = 1
-    if c == 0:
+def dfs(r, c, p, cnt):
+    global total
+    if cnt == n:
         total += p
-        arr[x][y] = 0
         return
-    for i in lst:
-        if arr[x+i[1]][y+i[2]] == 0 and i[0] != 0:
-            dfs(x+i[1], y+i[2], c-1, p*i[0])
-    arr[x][y] = 0
+    for i in range(4):
+        nr, nc = r+dr[i], c+dc[i]
+        if not board[nr][nc]:
+            board[nr][nc] = True
+            dfs(nr, nc, p*prob[i], cnt+1)
+            board[nr][nc] = False
 
-dfs(16, 16, count, 1)
+total = 0
+board[n][n] = True
+dfs(n, n, 1, 0)
 print(total)
