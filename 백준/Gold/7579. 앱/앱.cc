@@ -4,14 +4,12 @@
 
 using namespace std;
 
-int n, m;
-int sum;
-int res = 10000001;
-int memory[101];
-int cost[101];
-int dp[10001];
-
 int main() {
+	int n, m, sum = 0, res = 10000001;
+	int memory[101];
+	int cost[101];
+	int dp[10001] = {0, };
+
 	FIO;
 	cin >> n >> m;
 	for (int i = 0; i < n; i++) cin >> memory[i];
