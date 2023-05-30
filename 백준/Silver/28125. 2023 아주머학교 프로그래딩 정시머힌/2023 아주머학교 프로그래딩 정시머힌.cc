@@ -1,20 +1,10 @@
 #include <iostream>
 #include <string>
-#include <map>
 #define FIO ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 
 using namespace std;
 
 int main() {
-	map<char, char> mp;
-	mp.insert(pair<char, char>('@', 'a'));
-	mp.insert(pair<char, char>('[', 'c'));
-	mp.insert(pair<char, char>('!', 'i'));
-	mp.insert(pair<char, char>(';', 'j'));
-	mp.insert(pair<char, char>('^', 'n'));
-	mp.insert(pair<char, char>('0', 'o'));
-	mp.insert(pair<char, char>('7', 't'));
-
 	int n;
 	cin >> n;
 	for (int i = 0; i < n; i++) {
@@ -22,26 +12,51 @@ int main() {
 		string str, res;
 		cin >> str;
 		while (j < str.length()) {
-			if (str[j] == '\\') {
-				if (j+1 < str.length() && str[j+1] == '\'') {
+			switch (str[j]) {
+				case '@':
+					res += 'a';
 					cnt++;
-					res += 'v';
-					j++;
-				}
-				else if (j+2 < str.length() && str[j+1] == '\\' && str[j+2] == '\'') {
+					break;
+				case '[':
+					res += 'c';
 					cnt++;
-					res += 'w';
-					j += 2;
-				}
-				else res += str[j];
-			}
-			else {
-				auto it = mp.find(str[j]);
-				if (it != mp.end()) {
+					break;
+				case '!':
+					res += 'i';
 					cnt++;
-					res += it->second;
-				}
-				else res += str[j];
+					break;
+				case ';':
+					res += 'j';
+					cnt++;
+					break;
+				case '^':
+					res += 'n';
+					cnt++;
+					break;
+				case '0':
+					res += 'o';
+					cnt++;
+					break;
+				case '7':
+					res += 't';
+					cnt++;
+					break;
+				case '\\':
+					if (j+1 < str.length() && str[j+1] == '\'') {
+						cnt++;
+						res += 'v';
+						j++;
+					}
+					else if (j+2 < str.length() && str[j+1] == '\\' && str[j+2] == '\'') {
+						cnt++;
+						res += 'w';
+						j += 2;
+					}
+					else res += str[j];
+					break;
+				default:
+					res += str[j];
+					break;
 			}
 			j++;
 		}
