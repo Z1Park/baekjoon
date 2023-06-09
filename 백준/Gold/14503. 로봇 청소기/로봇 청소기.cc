@@ -42,10 +42,9 @@ int main() {
 		// }
 		// cout << endl;
 		if (flag) continue;
-		int back = (d + 2) % 4;
-		if (board[r + dr[back]][c + dc[back]] == 1) break;
-		r += dr[back];
-		c += dc[back];
+		if (board[r - dr[d]][c - dc[d]] == 1) break;
+		r -= dr[d];
+		c -= dc[d];
 	}
 	cout << cnt << endl;
 
