@@ -35,15 +35,10 @@ int main() {
 				break;
 			}
 		}
-		// for (int i = 0; i < n; i++) {
-		// 	for (int j = 0; j < m; j++) cout << clear[i][j] << " ";
-		// 	cout << endl;
-		// }
-		// cout << endl;
 		if (flag) continue;
-		if (board[r - dr[d]][c - dc[d]] == 1) break;
 		r -= dr[d];
 		c -= dc[d];
+		if (board[r][c] == 1) break;
 	}
 	cout << cnt << endl;
 
