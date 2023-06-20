@@ -1,30 +1,21 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <math.h>
 
 int main() {
 	int c;
-	int n;
-	int arr[1000];
-	int sum;
-	float cnt;
-
 	scanf("%d", &c);
-
 	for (int i = 0; i < c; i++) {
+		int n, sum = 0;
 		scanf("%d", &n);
-		sum = 0;
-		cnt = 0;
+		int nums[n];
 		for (int j = 0; j < n; j++) {
-			scanf("%d", &arr[j]);
-			sum += arr[j];
+			scanf("%d", &nums[j]);
+			sum += nums[j];
 		}
-		for (int j = 0; j < n; j++) {
-			if (arr[j] > sum / n)
-				cnt += 1;
-		}
-		printf("%.3f%\n", cnt / n * 100);
-		
+		float avg = ((float)sum) / n;
+		int cnt = 0;
+		for (int j = 0; j < n; j++)
+			if (nums[j] > avg) cnt++;
+		printf("%.3f%%\n", round((float)cnt / (float)n * 100000) / 1000);
 	}
-
-	return 0;
 }
