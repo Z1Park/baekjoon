@@ -27,32 +27,24 @@ int main() {
 	int n, q, x1, x2, y;
 	cin >> n >> q;
 	vector<logData> v;
+	vector<int> group(1);
 	for (int i = 1; i <= n; i++) {
 		cin >> x1 >> x2 >> y;
 		v.push_back(logData(x1, x2, i));
+		group.push_back(0);
 	}
 	sort(v.begin(), v.end(), comp);
-	int start, end;
+	int ind = 0, end = v[0].x2;
+	group[0] = ind;
+	for (int i = 1; i < v.size(); i++) {
+		if (v[i].x1 > end) ind++;
+		end = v[i].x2;
+		group[v[i].idx] = ind;
+	}
+	int s, e;
 	for (int i = 0; i < q; i++) {
-		cin >> start >> end;
-		bool flag = false;
-		for (int j = 0; j < v.size(); j++) {
-			if (v[j].idx == start || v[j].idx == end) {
-				int idx = j+1;
-				int right = v[j].x2;
-				for (; idx < v.size(); idx++) {
-					if (v[idx].x1 > right) break;
-					if (v[idx].idx == end || v[idx].idx == start) {
-						flag = true;
-						cout << 1 << endl;
-						break;
-					}
-					right = v[idx].x2;
-				}
-				break;
-			}
-		}
-		if (!flag) cout << 0 << endl;
+		cin >> s >> e;
+		cout << ((group[s] == group[e]) ? 1 : 0) << endl;
 	}
 
 	return 0;
