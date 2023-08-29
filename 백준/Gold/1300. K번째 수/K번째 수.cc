@@ -5,9 +5,10 @@ using namespace std;
 long long n, k;
 
 bool promise(long long value) {
-	long long count = 0;
+	long long count = 0, tmp;
 	for (long long i = 1; i <= n; i++) {
-		count += (value / i > n) ? n : value / i;
+		tmp = value / i;
+		count += (tmp > n) ? n : tmp;
 		if (count >= k) return true;
 	}
 	return false;
@@ -16,9 +17,9 @@ bool promise(long long value) {
 int main() {
 
 	scanf("%lld\n%lld", &n, &k);
-	long long start = 1, end = n * n;
+	long long start = 1, end = n * n, mid;
 	while (start <= end) {
-		long long mid = (start + end) / 2;
+		mid = (start + end) / 2;
 		if (promise(mid)) end = mid - 1;
 		else start = mid + 1;
 	}
