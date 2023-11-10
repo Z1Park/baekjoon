@@ -1,18 +1,13 @@
 import java.util.*;
+import static java.util.stream.Collectors.*;
 
 class Solution {
     public int solution(String[][] clothes) {
-        Map<String, Integer> map = new HashMap<>();
-        for (String[] cloth : clothes) {
-            if (map.containsKey(cloth[1]))
-                map.put(cloth[1], map.get(cloth[1]) + 1);
-            else
-                map.put(cloth[1], 2);
-        }
-        int res = 1;
-        Collection<Integer> list = map.values();
-        for (Integer elem : list)
-            res *= elem;
-        return res - 1;
+        return Arrays.stream(clothes)
+            .collect(groupingBy(cloth -> cloth[1], 
+                               mapping(elem -> elem, counting())))
+            .values()
+            .stream()
+            .collect(reducing(1L, (a, b) -> a * (b + 1))).intValue() - 1;
     }
 }
