@@ -2,19 +2,21 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        List<Integer> res = new ArrayList<>();
+        List<Integer> resList = new ArrayList<>();
         int days = 0;
-        for (int i = 0; i < speeds.length;) {
-            days = (100 - progresses[i]) / speeds[i];
-            if ((100 - progresses[i]) % speeds[i] != 0) days++;
+        int i = 0;
+        while (i < speeds.length) {
+            int now = progresses[i] + days * speeds[i];
+            if (now < 100)
+                days += Math.ceil((double)(100 - now) / speeds[i]);
             int cnt = 0;
             while (i < speeds.length 
-                   && progresses[i] + speeds[i] * days >= 100) {
-                i++;
+                   && progresses[i] + days * speeds[i] >= 100) {
                 cnt++;
+                i++;
             }
-            res.add(cnt);
+            resList.add(cnt);
         }
-        return res.stream().mapToInt(Integer::intValue).toArray();
+        return resList.stream().mapToInt(Integer::intValue).toArray();
     }
 }
