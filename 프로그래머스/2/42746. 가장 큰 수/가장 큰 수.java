@@ -11,10 +11,7 @@ class Solution {
                     return Integer.parseInt(o2 + o1)-Integer.parseInt(o1 + o2);
                 }
             }).toArray(String[]::new));
-        for (int i = 0; i < res.length(); i++) {
-            if (res.charAt(i) != '0')
-                return res;
-        }
-        return "0";
+        if (res.charAt(0) == '0') return "0";
+        return res;
     }
 }
