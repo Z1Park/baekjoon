@@ -1,10 +1,10 @@
 # [level 2] 삼각 달팽이 - 68645 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/68645?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/68645?language=java#) 
 
 ### 성능 요약
 
-메모리: 129 MB, 시간: 28.36 ms
+메모리: 126 MB, 시간: 20.86 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2023년 11월 3일 9:58:37
+2023년 11월 3일 10:4:2
 
 ### 문제 설명
 
