@@ -16,7 +16,7 @@ class Main {
 			int tmp = arr[left] + arr[right];
 			if (tmp == x) {
 				cnt++;
-				left++;
+				right--;
 			}
 			else if (tmp < x) left++;
 			else right--;
