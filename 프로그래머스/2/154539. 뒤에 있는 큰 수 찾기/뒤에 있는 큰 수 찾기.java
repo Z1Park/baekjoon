@@ -3,15 +3,15 @@ import javafx.util.Pair;
 
 class Solution {
     public int[] solution(int[] numbers) {
-        Stack<Pair<Integer, Integer>> stk = new Stack<>();
+        Deque<Pair<Integer, Integer>> stk = new ArrayDeque<>();
         int[] res = new int[numbers.length];
         for (int i = 0; i < numbers.length; i++) res[i] = -1;
         for (int i = 0; i < numbers.length; i++) {
-            while (!stk.isEmpty() && stk.peek().getKey() < numbers[i]) {
-                Pair<Integer, Integer> p = stk.pop();
+            while (!stk.isEmpty() && stk.peekLast().getKey() < numbers[i]) {
+                Pair<Integer, Integer> p = stk.pollLast();
                 res[p.getValue()] = numbers[i];
             }
-            stk.push(new Pair(numbers[i], i));
+            stk.addLast(new Pair(numbers[i], i));
         }
         return res;
     }
