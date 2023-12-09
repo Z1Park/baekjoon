@@ -2,33 +2,27 @@ import java.util.*;
 
 class Solution {
     
-    private boolean checkMatch(Character a, Character b) {
-        if (a == '[' && b == ']') return true;
-        else if (a == '(' && b == ')') return true;
-        else if (a == '{' && b == '}') return true;
-        return false;
-    }
+    private String open = "[({";
+    private String closed = "])}";
     
     public int solution(String s) {
         int cnt = 0;
         for (int i = 0; i < s.length(); i++) {
             cnt++;
-            Stack<Character> stk = new Stack<>();
+            Deque<Character> stk = new ArrayDeque<>();
             for (int idx = 0; idx < s.length(); idx++) {
-                int now = (i+idx) % s.length();
-                if (s.charAt(now) == '(' || s.charAt(now) == '{' || s.charAt(now) == '[') {
-                    stk.push(s.charAt(now));
-                }
+                char c = s.charAt((idx + i) % s.length());
+                if (open.indexOf(c) != -1)
+                    stk.addLast(c);
                 else {
-                    if (stk.empty() || !checkMatch(stk.peek(), s.charAt(now))) {
+                    if (stk.isEmpty() || closed.indexOf(c) != open.indexOf(stk.pollLast())) {
                         cnt--;
                         stk.clear();
                         break;
                     }
-                    stk.pop();
                 }
             }
-            if (!stk.empty()) cnt--;
+            if (!stk.isEmpty()) cnt--;
         }
         return cnt;
     }
