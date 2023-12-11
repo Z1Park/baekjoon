@@ -1,21 +1,19 @@
 import java.util.*;
-import static java.util.stream.Collectors.*;
-import javafx.util.Pair;
+import java.util.stream.*;
 
 class Solution {
     public int solution(int k, int[] tangerine) {
-        Long[] arr = Arrays.stream(tangerine)
-            .boxed()
-            .collect(groupingBy(t-> t, mapping(t->t, counting())))
-            .values()
-            .stream()
-            .sorted(Collections.reverseOrder())
-            .toArray(Long[]::new);
-        int sum = 0;
-        for (int i = 0; i < arr.length; i++) {
-            sum += arr[i];
-            if (sum >= k) return i+1;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int t : tangerine)
+            map.put(t, map.getOrDefault(t, 0) + 1);
+        List<Integer> list = map.values().stream()
+            .sorted((a, b) -> b - a).collect(Collectors.toList());
+        int cnt = 0, sum = 0;
+        for (int e : list) {
+            sum += e;
+            cnt++;
+            if (k <= sum) break;
         }
-        return tangerine.length;
+        return cnt;
     }
 }
