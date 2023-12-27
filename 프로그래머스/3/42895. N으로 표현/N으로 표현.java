@@ -20,7 +20,7 @@ class Solution {
     }
     
     public int solution(int N, int number) { 
-        for (int num = N, i = 1; num <= 99999999; i++, num = num * 10 + N) {
+        for (int num = N, i = 1; num <= 9999999; i++, num = num * 10 + N) {
             map.put(num, i);
             pq.add(new int[]{i, num});
         }
