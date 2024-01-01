@@ -1,66 +1,50 @@
 import java.util.*;
 import java.util.stream.*;
-import static java.util.stream.Collectors.*;
 
 class Solution {
     
     private class Data {
-        private String language;
-        private int startTime;
-        private int playTime;
+        public int remainTime;
+        public String name;
         
-        Data(String[] arr) {
-            language = arr[0];
-            String[] tmp = arr[1].split(":");
-            startTime = Integer.parseInt(tmp[0]) * 60 + Integer.parseInt(tmp[1]);
-            playTime = Integer.parseInt(arr[2]);
-        }
-        
-        public String toString() {
-            return String.format("[language: %s, start: %d, end: %d]",
-                                language, startTime, playTime);
+        public Data(int remainTime, String name) {
+            this.remainTime = remainTime;
+            this.name = name;
         }
     }
     
+    private int getTime(String time) {
+        String[] arr = time.split(":");
+        return Integer.parseInt(arr[0]) * 60 + Integer.parseInt(arr[1]);
+    }
+    
     public String[] solution(String[][] plans) {
-        List<Data> dataList = Arrays.stream(plans).map(Data::new)
-            .sorted(new Comparator<Data>(){
-                @Override
-                public int compare(Data o1, Data o2) {
-                    return o1.startTime - o2.startTime;
-                }
-            })
-            .collect(toList());
-        Deque<Data> waitQueue = new ArrayDeque<>();
+        Arrays.sort(plans, Comparator.comparing(arr -> arr[1]));
+        Deque<Data> dq = new ArrayDeque<>();
         List<String> res = new ArrayList<>();
-        Data curr = dataList.get(0);
-        for (int i = 1; i < dataList.size(); i++) {
-            Data next = dataList.get(i);
-            if (curr.startTime + curr.playTime <= next.startTime) {
-                res.add(curr.language);
-                int currTime = curr.startTime + curr.playTime;
-                while (!waitQueue.isEmpty()) {
-                    Data tmp = waitQueue.pollLast();
-                    if (currTime + tmp.playTime <= next.startTime) {
-                        currTime += tmp.playTime;
-                        res.add(tmp.language);
-                    }
-                    else {
-                        tmp.playTime -= next.startTime - currTime;
-                        waitQueue.addLast(tmp);
-                        break;
-                    }
+        int curr = 0;
+        for (String[] plan : plans) {
+            String name = plan[0];
+            int startTime = getTime(plan[1]);
+            int duration = Integer.parseInt(plan[2]);
+            while (!dq.isEmpty() && curr < startTime) {
+                Data work = dq.pollLast();
+                int end = curr + work.remainTime;
+                if (end <= startTime) {
+                    curr = end;
+                    res.add(work.name);
+                }
+                else {
+                    work.remainTime = end - startTime;
+                    dq.addLast(work);
+                    curr =  startTime;
                 }
             }
-            else {
-                curr.playTime -= next.startTime - curr.startTime;
-                waitQueue.addLast(curr);
-            }
-            if (i != dataList.size() - 1) curr = next;
-            else res.add(next.language);
+            if (curr != startTime) curr = startTime;
+            dq.addLast(new Data(duration, name));
         }
-        while (!waitQueue.isEmpty())
-            res.add(waitQueue.pollLast().language);
+        while (!dq.isEmpty())
+            res.add(dq.pollLast().name);
         return res.stream().toArray(String[]::new);
     }
 }
