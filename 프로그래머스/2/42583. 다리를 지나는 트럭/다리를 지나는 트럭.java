@@ -1,28 +1,23 @@
 import java.util.*;
-import javafx.util.Pair;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        Queue<Pair<Integer, Integer>> que = new LinkedList<>();
-        int time = 1;
-        int totalWeight = 0;
+        Queue<int[]> que = new ArrayDeque<>();
+        int weightSum = 0, time = 1;
         for (int truck : truck_weights) {
-            while (!que.isEmpty() && que.peek().getKey() <= time) {
-                totalWeight -= que.poll().getValue();
+            while (!que.isEmpty() && que.peek()[0] < time)
+                weightSum -= que.poll()[1];
+            while (que.size() >= bridge_length || weightSum + truck > weight) {
+                int[] tmp = que.poll();
+                time = tmp[0];
+                weightSum -= tmp[1];
             }
-            while (que.size() >= bridge_length || totalWeight+truck > weight) {
-                Pair<Integer, Integer> p = que.poll();
-                totalWeight -= p.getValue();
-                time = p.getKey();
-            }
-            que.add(new Pair(time + bridge_length, truck));
-            totalWeight += truck;
+            que.add(new int[]{time + bridge_length, truck});
+            weightSum += truck;
             time++;
         }
-        while (!que.isEmpty()) {
-            Pair<Integer, Integer> p = que.poll();
-            time = p.getKey();
-        }
+        while (!que.isEmpty())
+            time = que.poll()[0];
         return time;
     }
 }
