@@ -1,16 +1,12 @@
 class Solution {
     public int[] solution(String s) {
-        int transCount = 0;
-        int removeCount = 0;
-        while (s.length() > 1) {
-            transCount += 1;
+        int transCount = 0, removeCount = 0;
+        for (; s.length() > 1; transCount++) {
             int tmp = s.length();
             s = s.replace("0", "");
             removeCount += tmp - s.length();
-            tmp = s.length();
-            s = Integer.toBinaryString(tmp);
+            s = Integer.toBinaryString(s.length());
         }
-        int[] res = {transCount, removeCount};
-        return res;
+        return new int[]{transCount, removeCount};
     }
 }
