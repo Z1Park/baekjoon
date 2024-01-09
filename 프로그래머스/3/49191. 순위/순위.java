@@ -2,22 +2,19 @@ import java.util.*;
 
 class Solution {
     
-    private int getScore(int n, int idx, List<List<Integer>> graph) {
-        int cnt = 0;
-        boolean[] visit = new boolean[n+1];
+    private int calculateScore(List<List<Integer>> graph, int idx) {
+        Set<Integer> set = new HashSet<>();
         Deque<Integer> dq = new ArrayDeque<>();
-        visit[idx] = true;
-        dq.add(idx);
+        for (int e : graph.get(idx)) dq.add(e);
         while (!dq.isEmpty()) {
-            int curr = dq.poll();
-            for (int next : graph.get(curr)) {
-                if (visit[next]) continue;
-                visit[next] = true;
-                cnt++;
-                dq.addLast(next);
+            int e = dq.poll();
+            set.add(e);
+            for (int tmp : graph.get(e)) {
+                if (!set.contains(tmp))
+                    dq.add(tmp);
             }
         }
-        return cnt;
+        return set.size();
     }
     
     public int solution(int n, int[][] results) {
@@ -27,19 +24,18 @@ class Solution {
             winGraph.add(new ArrayList<>());
             loseGraph.add(new ArrayList<>());
         }
+        
         for (int[] result : results) {
-            winGraph.get(result[0]).add(result[1]);
-            loseGraph.get(result[1]).add(result[0]);
+            int win = result[0], lose = result[1];
+            winGraph.get(win).add(lose);
+            loseGraph.get(lose).add(win);
         }
         int[][] score = new int[n+1][2];
-        for (int i = 1; i <= n; i++) {
-            score[i][0] = getScore(n, i, winGraph);
-            score[i][1] = getScore(n, i, loseGraph);
-        }
         int cnt = 0;
         for (int i = 1; i <= n; i++) {
-            if (score[i][0] + score[i][1] == n - 1) 
-                cnt++;
+            int tmp = calculateScore(winGraph, i);
+            tmp += calculateScore(loseGraph, i);
+            if (tmp == n - 1) cnt++;
         }
         return cnt;
     }
