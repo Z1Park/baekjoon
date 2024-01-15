@@ -23,9 +23,10 @@ class Solution {
     
     public int solution(String[] user_id, String[] banned_id) {
         for (String ban : banned_id) {
-            Pattern pattern = Pattern.compile("^"+ban.replace("*", ".")+"$");
+            // Pattern pattern = Pattern.compile("^"+ban.replace("*", ".")+"$");
+            String regex = ban.replace("*", ".");
             Set<String> tmp = Arrays.stream(user_id)
-                .filter(pattern.asPredicate())
+                .filter(e -> Pattern.matches(regex, e))
                 .collect(Collectors.toSet());
             matchList.add(tmp.stream().collect(Collectors.toList()));
         }
