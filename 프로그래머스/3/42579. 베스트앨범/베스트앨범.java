@@ -1,19 +1,24 @@
 import java.util.*;
-import java.util.stream.*;
-import static java.util.stream.Collectors.*;
 
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
         Map<String, List<int[]>> genreMap = new HashMap<>();
-        for (int i = 0; i < genres.length; i++)
-            genreMap.computeIfAbsent(genres[i], e -> new ArrayList<>())
-                .add(new int[]{i, plays[i]});
+        for (int i = 0; i < genres.length; i++) {
+            if (genreMap.containsKey(genres[i])) {
+                List<int[]> currGenre = genreMap.get(genres[i]);
+                currGenre.add(new int[]{plays[i], i});
+            }
+            else {
+                List<int[]> currGenre = new ArrayList<>();
+                currGenre.add(new int[]{plays[i], i});
+                genreMap.put(genres[i], currGenre);
+            }
+        }
         return genreMap.values().stream()
-            .sorted(Comparator.comparing(
-                e -> -e.stream().mapToInt(arr -> arr[1]).sum()))
-            .flatMapToInt(e -> e.stream()
-                          .sorted(Comparator.comparing(arr -> -arr[1]))
-                          .mapToInt(arr -> arr[0]).limit(2))
+            .sorted(Comparator.comparing(list -> -list.stream().mapToInt(arr -> arr[0]).sum()))
+            .flatMapToInt(list -> list.stream()
+                          .sorted(Comparator.comparing(arr -> -arr[0]))
+                          .mapToInt(arr -> arr[1]).limit(2))
             .toArray();
     }
 }
