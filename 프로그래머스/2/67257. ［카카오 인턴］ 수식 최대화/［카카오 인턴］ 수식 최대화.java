@@ -2,64 +2,66 @@ import java.util.*;
 
 class Solution {
     
-    private long calculate(char o, long n1, long n2) {
-        if (o == '*') return n1 * n2;
-        if (o == '+') return n1 + n2;
-        return n1 - n2;
+    private List<Long> numList = new LinkedList<>();
+    private List<Character> operList = new LinkedList<>();
+    private Set<Character> used = new LinkedHashSet<>();
+    private long maxValue = Long.MIN_VALUE;
+    
+    private long operate(char oper, long n1, long n2) {
+        switch (oper) {
+            case '*':
+                return n1 * n2;
+            case '+':
+                return n1 + n2;
+            default:
+                return n1 - n2;
+        }
     }
     
-    private long getResult(List<Long> nums, List<Character> opers, char[] priority) {
-        for (char p : priority) {
-            List<Integer> position = new ArrayList<>();
-            int idx = 0;
-            for (char o : opers) {
-                if (o == p) position.add(idx);
-                idx++;
-            }
-            int cnt = 0;
-            for (int i = 0; i < position.size(); i++) {
-                idx = position.get(i) - cnt++;
-                opers.remove(idx);
-                long n1 = nums.remove(idx);
-                long n2 = nums.remove(idx);
-                nums.add(idx, calculate(p, n1, n2));
-            }
-        }
+    private long calculate() {
+        List<Long> nums = new LinkedList<>(numList);
+		List<Character> opers = new LinkedList<>(operList);
+		for (char u : used) {
+			for (int i = 0; i < opers.size(); i++) {
+				char oper = opers.get(i);
+				if (opers.get(i) != u) continue;
+				long num = operate(oper, nums.get(i), nums.get(i+1));
+				nums.set(i, num);
+				nums.remove(i+1);
+				opers.remove(i--);
+			}
+		}
         return nums.get(0);
     }
     
-    public long solution(String expression) {
-        List<Long> nums = new LinkedList<>();
-        List<Character> opers = new LinkedList<>();
-        int idx = 0;
-        while (idx < expression.length()) {
-            if (!Character.isDigit(expression.charAt(idx))) {
-                opers.add(expression.charAt(idx++));
-                continue;
-            }
-            int tmp = idx + 1;
-            while (tmp < expression.length() 
-                   && Character.isDigit(expression.charAt(tmp)))
-                tmp++;
-            nums.add(Long.parseLong(expression.substring(idx, tmp)));
-            idx = tmp;
+    private void dfs(int depth) {
+        if (depth >= 3) {
+            long curr = Math.abs(calculate());
+            if (curr > maxValue) maxValue = curr;
+            return;
         }
-        String pri = "*+-";
-        long maxValue = 0;
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (i == j) continue;
-                for (int k = 0; k < 3; k++) {
-                    if (i == k || j == k) continue;
-                    char[] tmpPri = new char[]{
-                        pri.charAt(i), pri.charAt(j), pri.charAt(k)};
-                    List<Long> tmpNums = new LinkedList<>(nums);
-                    List<Character> tmpOpers = new LinkedList<>(opers);
-                    long result = Math.abs(getResult(tmpNums, tmpOpers, tmpPri));
-                    if (maxValue < result) maxValue = result;
-                }
+            char oper = "+*-".charAt(i);
+            if (used.contains(oper)) continue;
+            used.add(oper);
+            dfs(depth+1);
+            used.remove(oper);
+        }
+    }
+    
+    public long solution(String expression) {
+        int idx = 0;
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (!Character.isDigit(c)) {
+                numList.add(Long.parseLong(expression.substring(idx, i)));
+                operList.add(c);
+                idx = i + 1;
             }
         }
+        numList.add(Long.parseLong(expression.substring(idx, expression.length())));
+        
+        dfs(0);
         return maxValue;
     }
 }
