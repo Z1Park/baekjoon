@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.*;
 
 class Solution {
     int solution(int[][] land) {
@@ -10,11 +9,15 @@ class Solution {
             for (int j = 0; j < 4; j++) {
                 for (int k = 0; k < 4; k++) {
                     if (j == k) continue;
-                    dp[i][j] = Math.max(dp[i][j], dp[i-1][k]);
+                    dp[i][j] = Math.max(dp[i][j], dp[i-1][k] + land[i][j]);
                 }
-                dp[i][j] += land[i][j];
             }
         }
-        return Arrays.stream(dp[land.length-1]).max().orElse(0);
+        int maxValue = 0;
+        for (int i = 0; i < 4; i++) {
+            if (maxValue < dp[land.length-1][i])
+                maxValue = dp[land.length-1][i];
+        }
+        return maxValue;
     }
 }
