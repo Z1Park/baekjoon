@@ -12,11 +12,6 @@ class Solution {
                 else dp[i][j] = Math.min(dp[i-1][j-1], Math.min(dp[i][j-1], dp[i-1][j])) + 1;
             }
         }
-        System.out.println("     " + Arrays.toString(word2.toCharArray()));
-        for (int i = 0; i <= word1.length(); i++) {
-            String str = (i == 0 ? " " : word1.charAt(i-1)) + " " + Arrays.toString(dp[i]);
-            System.out.println(str);
-        }
         return dp[word1.length()][word2.length()];
     }
 }
