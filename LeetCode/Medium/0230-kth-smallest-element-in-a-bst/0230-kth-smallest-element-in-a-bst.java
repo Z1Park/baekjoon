@@ -14,17 +14,21 @@
  * }
  */
 class Solution {
+    
+    private int cnt = 0;
+    
+    private int prefixSequence(TreeNode node, int k) {
+        int res = -1;
+        if (node.left != null)
+            res = prefixSequence(node.left, k);
+        if (res != -1) return res;
+        if (++cnt == k) return node.val;
+        if (node.right != null)
+            res = prefixSequence(node.right, k);
+        return res;
+    }
+    
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> nums = new ArrayList<>();
-        Deque<TreeNode> dq = new ArrayDeque<>();
-        dq.add(root);
-        while (!dq.isEmpty()) {
-            TreeNode node = dq.poll();
-            nums.add(node.val);
-            if (node.left != null) dq.add(node.left);
-            if (node.right != null) dq.add(node.right);
-        }
-        Collections.sort(nums);
-        return nums.get(k-1);
+        return prefixSequence(root, k);
     }
 }
