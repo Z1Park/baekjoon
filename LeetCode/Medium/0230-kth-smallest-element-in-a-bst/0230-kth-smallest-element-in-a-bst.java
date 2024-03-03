@@ -15,18 +15,16 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        List<Integer> nums = new ArrayList<>();
         Deque<TreeNode> dq = new ArrayDeque<>();
         dq.add(root);
         while (!dq.isEmpty()) {
             TreeNode node = dq.poll();
-            pq.add(node.val);
-            if (pq.size() > k) pq.poll();
-            if (node.left != null)
-                dq.add(node.left);
-            if (node.right != null)
-                dq.add(node.right);
+            nums.add(node.val);
+            if (node.left != null) dq.add(node.left);
+            if (node.right != null) dq.add(node.right);
         }
-        return pq.poll();
+        Collections.sort(nums);
+        return nums.get(k-1);
     }
 }
