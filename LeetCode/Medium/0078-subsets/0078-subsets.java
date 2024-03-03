@@ -1,7 +1,7 @@
 class Solution {
 
     private void getCombination(List<List<Integer>> combinations, int[] nums, List<Integer> buffer, int curr) {
-        combinations.add(new ArrayList<>(buffer));
+        combinations.add(List.copyOf(buffer));
         
         for (int i = curr; i < nums.length; i++) {
             buffer.add(nums[i]);
