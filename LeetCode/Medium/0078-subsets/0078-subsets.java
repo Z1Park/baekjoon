@@ -3,7 +3,7 @@ class Solution {
     private List<List<Integer>> combinations = new ArrayList<>();
     
     private void getCombination(int[] nums, List<Integer> buffer, int curr) {
-        combinations.add(List.copyOf(buffer));
+        combinations.add(new ArrayList<>(buffer));
         
         for (int i = curr; i < nums.length; i++) {
             buffer.add(nums[i]);
