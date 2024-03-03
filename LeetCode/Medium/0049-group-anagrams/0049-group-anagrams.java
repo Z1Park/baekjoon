@@ -9,6 +9,6 @@ class Solution {
             res.computeIfAbsent(String.valueOf(alps), k -> new ArrayList<>())
                 .add(str);
         }
-        return res.values().stream().toList();
+        return new ArrayList<>(res.values());
     }
 }
