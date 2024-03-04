@@ -4,9 +4,9 @@ class Solution {
     private Deque<String> buffer = new ArrayDeque<>();
     
     
-    private boolean isPalindrome(String str) {
-        for (int i = 0, j = str.length()-1; i < str.length() / 2; i++, j--) {
-            if (str.charAt(i) != str.charAt(j))
+    private boolean isPalindrome(String str, int l, int r) {
+        for (; l < r; l++, r--) {
+            if (str.charAt(l) != str.charAt(r))
                 return false;
         }
         return true;
@@ -19,9 +19,8 @@ class Solution {
         }
         
         for (int i = idx+1; i <= s.length(); i++) {
-            String partition = s.substring(idx, i);
-            if (isPalindrome(partition)) {
-                buffer.add(partition);
+            if (isPalindrome(s, idx, i-1)) {
+                buffer.add(s.substring(idx, i));
                 makeCombination(s, i);
                 buffer.pollLast();
             }
