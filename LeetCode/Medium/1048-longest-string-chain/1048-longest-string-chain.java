@@ -6,7 +6,8 @@ class Solution {
         for (String word : words) {
             int maxCount = 0;
             for (int i = 0; i < word.length(); i++) {
-                String prev = word.substring(0, i) + word.substring(i+1);
+                StringBuilder sb = new StringBuilder(word);
+                String prev = sb.deleteCharAt(i).toString();
                 maxCount = Math.max(maxCount, dpMap.getOrDefault(prev, 0) + 1);
             }
             dpMap.put(word, maxCount);
