@@ -4,11 +4,12 @@ class Solution {
         Map<String, Integer> dpMap = new HashMap<>();
         int result = 0;
         for (String word : words) {
-            int maxCount = 0;
+            int maxCount = 1;
             for (int i = 0; i < word.length(); i++) {
                 StringBuilder sb = new StringBuilder(word);
                 String prev = sb.deleteCharAt(i).toString();
-                maxCount = Math.max(maxCount, dpMap.getOrDefault(prev, 0) + 1);
+                if (dpMap.containsKey(prev))
+                    maxCount = Math.max(maxCount, dpMap.getOrDefault(prev, 0) + 1);
             }
             dpMap.put(word, maxCount);
             if (result < maxCount)
