@@ -14,31 +14,23 @@
  * }
  */
 class Solution {
-    
-    private class Data {
-        public TreeNode node;
-        public int level;
-        
-        public Data(TreeNode node, int level) {
-            this.node = node;
-            this.level = level;
-        }
-    }
-    
     public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
-        if (root == null) return result;
-        Deque<Data> dq = new ArrayDeque<>();
-        dq.add(new Data(root, 1));
-        while (!dq.isEmpty()) {
-            Data data = dq.poll();
-            if (result.size() < data.level)
-                result.add(new ArrayList<>());
-            result.get(data.level-1).add(data.node.val);
-            if (data.node.left != null)
-                dq.add(new Data(data.node.left, data.level+1));
-            if (data.node.right != null)
-                dq.add(new Data(data.node.right, data.level+1));
+        Queue<TreeNode> que = new LinkedList<>();
+        que.add(root);
+        while (!que.isEmpty()) {
+            int size = que.size();
+            List<Integer> tmp = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode node = que.poll();
+                if (node.left != null)
+                    que.add(node.left);
+                if (node.right != null)
+                    que.add(node.right);
+                tmp.add(node.val);
+            }
+            result.add(tmp);
         }
         return result;
     }
