@@ -20,7 +20,8 @@ class Solution {
         
         for (int i = idx+1; i <= s.length(); i++) {
             if (isPalindrome(s, idx, i-1)) {
-                buffer.add(s.substring(idx, i));
+                if (idx == i-1) buffer.add(Character.toString(s.charAt(idx)));
+                else buffer.add(s.substring(idx, i));
                 makeCombination(s, i);
                 buffer.pollLast();
             }
