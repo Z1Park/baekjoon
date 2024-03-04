@@ -1,7 +1,7 @@
 class Solution {
     
-    private List<List<String>> result = new ArrayList<>(); 
-    private Deque<String> buffer = new ArrayDeque<>();
+    private List<List<Integer>> combinations = new ArrayList<>(); 
+    private Deque<Integer> buffer = new ArrayDeque<>();
     
     
     private boolean isPalindrome(String str, int l, int r) {
@@ -14,14 +14,13 @@ class Solution {
     
     private void makeCombination(String s, int idx) {
         if (idx >= s.length()) {
-            result.add(new ArrayList<>(buffer));
+            combinations.add(new ArrayList<>(buffer));
             return;
         }
         
         for (int i = idx+1; i <= s.length(); i++) {
             if (isPalindrome(s, idx, i-1)) {
-                if (idx == i-1) buffer.add(Character.toString(s.charAt(idx)));
-                else buffer.add(s.substring(idx, i));
+                buffer.add(i);
                 makeCombination(s, i);
                 buffer.pollLast();
             }
@@ -30,6 +29,16 @@ class Solution {
     
     public List<List<String>> partition(String s) {
         makeCombination(s, 0);
+        List<List<String>> result = new ArrayList<>();
+        for (List<Integer> combination : combinations) {
+            int idx = 0;
+            List<String> tmp = new ArrayList<>();
+            for (int i : combination) {
+                tmp.add(s.substring(idx, i));
+                idx = i;
+            }
+            result.add(tmp);
+        }
         return result;
     }
 }
