@@ -2,6 +2,8 @@ class Solution {
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
         Deque<Integer> keys = new ArrayDeque<>();
         boolean[] used = new boolean[rooms.size()];
+        int cnt = 1;
+        
         keys.add(0);
         used[0] = true;
         while (!keys.isEmpty()) {
@@ -11,11 +13,9 @@ class Solution {
                 if (used[newKey]) continue;
                 keys.add(newKey);
                 used[newKey] = true;
+                cnt++;
             }
         }
-        for (int i = 0; i < used.length; i++) {
-            if (!used[i]) return false;
-        }
-        return true;
+        return cnt == rooms.size();
     }
 }
