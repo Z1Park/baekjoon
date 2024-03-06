@@ -4,7 +4,7 @@ class Solution {
     private boolean[] used;
     
     private void dfs(List<List<Integer>> rooms, int curr) {
-        if (used[curr] || curr > used.length) return;
+        if (used[curr]) return;
         used[curr] = true;
         cnt++;
         for (int next : rooms.get(curr))
