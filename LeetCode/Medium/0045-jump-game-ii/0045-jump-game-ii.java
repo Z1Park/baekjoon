@@ -1,16 +1,15 @@
 class Solution {
     public int jump(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp, Integer.MAX_VALUE);
-        dp[0] = 0;
+        if (nums.length == 1) return 0;
+        int maxReach = 0, current = 0, count = 0;
         for (int i = 0; i < nums.length; i++) {
-            for (int j = 1; j <= nums[i]; j++) {
-                int idx = i + j;
-                if (idx >= nums.length) break;
-                if (idx == nums.length-1) return dp[i]+1;
-                dp[idx] = Math.min(dp[idx], dp[i] + 1);
+            maxReach = Math.max(maxReach, i + nums[i]);
+            if (i == current) {
+                current = maxReach;
+                count++;
+                if (current >= nums.length-1) return count;
             }
         }
-        return dp[nums.length-1];
+        return count-1;
     }
 }
