@@ -5,18 +5,15 @@ class Solution {
         while (R > 0 && C > 0) {
             for (int i = 0; i < C; i++)
                 result.add(matrix[r][++c]);
-            R--;
-            if (R <= 0) break;
+            if (--R <= 0) break;
             
             for (int i = 0; i < R; i++)
                 result.add(matrix[++r][c]);
-            C--;
-            if (C <= 0) break;
+            if (--C <= 0) break;
             
             for (int i = 0; i < C; i++)
                 result.add(matrix[r][--c]);
-            R--;
-            if (R <= 0) break;
+            if (--R <= 0) break;
             
             for (int i = 0; i < R; i++)
                 result.add(matrix[--r][c]);
