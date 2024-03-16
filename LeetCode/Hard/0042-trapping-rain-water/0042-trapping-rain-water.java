@@ -1,25 +1,23 @@
 class Solution {
     public int trap(int[] height) {
-        Deque<Integer> stk = new ArrayDeque<>();
-        int sum = 0;
-        for (int i = 0; i < height.length; i++) {
-            if (!stk.isEmpty() && stk.peek() <= height[i]) {
-                int h = stk.poll();
-                while (!stk.isEmpty()) {
-                    sum += h - stk.poll();
-                }
+        int maxIndex = -1, maxValue = Integer.MIN_VALUE;
+        for (int i = 0 ; i < height.length; i++) {
+            if (maxValue < height[i]) {
+                maxIndex = i;
+                maxValue = height[i];
             }
-            stk.add(height[i]);
         }
-        int h = stk.pollLast();
-        int tmp = 0;
-        while (!stk.isEmpty()) {
-            if (h <= stk.peekLast()) {
-                h = stk.pollLast();
-                sum += tmp;
-                tmp = 0;
-            }
-            else tmp += h - stk.pollLast();
+        
+        int currMax = height[0], sum = 0;
+        for (int i = 1; i < maxIndex; i++) {
+            if (currMax <= height[i]) currMax = height[i];
+            else sum += currMax - height[i];
+        }
+        
+        currMax = height[height.length-1];
+        for (int i = height.length-1; i > maxIndex; i--) {
+            if (currMax <= height[i]) currMax = height[i];
+            else sum += currMax - height[i];
         }
         return sum;
     }
