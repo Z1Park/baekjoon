@@ -10,8 +10,15 @@ class Solution {
             }
         }
         for (int i = 0; i < matrix.length; i++) {
+            if (!row[i]) continue;
             for (int j = 0; j < matrix[0].length; j++) {
-                if (row[i] || col[j]) matrix[i][j] = 0;
+                matrix[i][j] = 0;
+            }
+        }
+        for (int j = 0; j < matrix[0].length; j++) {
+            if (!col[j]) continue;
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][j] = 0;
             }
         }
     }
