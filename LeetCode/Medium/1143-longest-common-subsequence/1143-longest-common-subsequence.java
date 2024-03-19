@@ -6,7 +6,7 @@ class Solution {
                 if (text1.charAt(i) == text2.charAt(j))
                     dp[i+1][j+1] = dp[i][j] + 1;
                 else
-                    dp[i+1][j+1] = Math.max(dp[i+1][j], Math.max(dp[i][j+1], dp[i][j]));
+                    dp[i+1][j+1] = Math.max(dp[i+1][j], dp[i][j+1]);
             }
         }
         return dp[text1.length()][text2.length()];
