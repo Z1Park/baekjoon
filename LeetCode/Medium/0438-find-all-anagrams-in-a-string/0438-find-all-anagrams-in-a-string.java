@@ -11,7 +11,7 @@ class Solution {
         for (int i = 0; i < s.length(); i++) {
             window[s.charAt(i) - 'a']++;
             if (i >= p.length()) window[s.charAt(i-p.length()) - 'a']--;
-            if (Arrays.compare(ref, window) == 0)
+            if (Arrays.equals(ref, window))
                 result.add(i - p.length() + 1);
         }
         return result;
