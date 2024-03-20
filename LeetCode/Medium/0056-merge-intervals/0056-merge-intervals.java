@@ -13,6 +13,6 @@ class Solution {
             else if (end < intervals[i][1]) end = intervals[i][1];
         }
         result.add(new int[]{start, end});
-        return result.stream().toArray(int[][]::new);
+        return result.toArray(int[][]::new);
     }
 }
