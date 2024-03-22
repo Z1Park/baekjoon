@@ -14,6 +14,7 @@ class Solution {
         Set<List<Integer>> result = new HashSet<>();
         int size = nums.length - 2;
         for (int i = 0; i < size; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) continue;
             int sum = 0, limit = nums.length;
             for (int j = i+1; j < limit; j++) {
                 sum = nums[i] + nums[j];
