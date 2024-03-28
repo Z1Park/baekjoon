@@ -1,14 +1,12 @@
 class Solution {
     boolean solution(String s) {
-        int cnt = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') cnt++;
-            else {
-                if (cnt <= 0) return false;
-                cnt--;
-            }
+        int open = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '(') open++;
+            else if (open <= 0) return false;
+            else open--;
         }
-        if (cnt != 0) return false;
-        return true;
+        if (open == 0) return true;
+        return false;
     }
 }
