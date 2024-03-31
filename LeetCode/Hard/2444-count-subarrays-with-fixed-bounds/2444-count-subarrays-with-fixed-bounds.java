@@ -6,7 +6,8 @@ class Solution {
             if (nums[i] == minK) minIndex = i;
             if (nums[i] == maxK) maxIndex = i;
             if (nums[i] < minK || maxK < nums[i]) outIndex = i;
-            count += Math.max(0L, Math.min(minIndex, maxIndex) - outIndex);
+            int tmp = Math.min(minIndex, maxIndex) - outIndex;
+            if (tmp > 0) count += tmp;
         }
         return count;
     }
