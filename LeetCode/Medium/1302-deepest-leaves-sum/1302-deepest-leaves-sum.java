@@ -15,11 +15,15 @@
  */
 class Solution {
     
-    private List<Integer> sums = new ArrayList<>();
+    private int maxLevel = -1;
+    private int sum = 0;
     
     private void calculateSum(TreeNode node, int level) {
-        if (sums.size() <= level) sums.add(node.val);
-        else sums.set(level, sums.get(level) + node.val);
+        if (maxLevel < level) {
+            maxLevel = level;
+            sum = node.val;
+        }
+        else if (maxLevel == level) sum += node.val;
         
         if (node.left != null) calculateSum(node.left, level+1);
         if (node.right != null) calculateSum(node.right, level+1);
@@ -27,6 +31,6 @@ class Solution {
     
     public int deepestLeavesSum(TreeNode root) {
         calculateSum(root, 0);
-        return sums.get(sums.size()-1);
+        return sum;
     }
 }
