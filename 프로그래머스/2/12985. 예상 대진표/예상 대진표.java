@@ -1,16 +1,16 @@
-import java.util.*;
-
-class Solution {
-    public int solution(int n, int a, int b) {
+class Solution
+{
+    public int solution(int n, int a, int b)
+    {
         a -= 1;
         b -= 1;
-        int cnt = 1;
-        while (a / 2 != b / 2) {
-            cnt++;
+        int answer = 1;
+        while (a != b) {
             n /= 2;
             a /= 2;
             b /= 2;
+            answer++;
         }
-        return cnt;
+        return answer-1;
     }
 }
