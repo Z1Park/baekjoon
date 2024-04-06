@@ -49,7 +49,6 @@ class Solution {
                 else result += values[roman.indexOf(c)];
             }
             else result += values[roman.indexOf(c)];
-            System.out.println(i + " : " + result);
         }
         return result;
     }
