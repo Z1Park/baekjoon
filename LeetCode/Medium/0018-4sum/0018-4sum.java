@@ -15,7 +15,7 @@ class Solution {
     private void threeSum(int[] nums, int idx, int target) {
         int len = nums.length - 2, start = idx+1;
         for (int i = start; i < len; i++) {
-            // if (nums[i] != start && nums[i] == nums[i-1]) continue;
+            if (i != start && nums[i] == nums[i-1]) continue;
             int l = i+1, r = nums.length-1;
             while (l < r) {
                 long sum = (long)nums[i] + nums[l] + nums[r];
