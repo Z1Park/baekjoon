@@ -1,21 +1,22 @@
 class Solution {
     public int secondsToRemoveOccurrences(String s) {
-        int lim = s.length() - 1, count = 0;
-        boolean flag = true;
-        while (flag) {
-            count++;
-            StringBuilder sb = new StringBuilder();
-            flag = false;
-            for (int i = 0; i < s.length(); i++) {
-                if (i < lim && s.charAt(i) == '0' && s.charAt(i+1) == '1') {
-                    flag = true;
-                    sb.append("10");
-                    i++;
+        boolean[] ones = new boolean[s.length()];
+        for (int i = 0; i < s.length(); i++)
+            ones[i] = (s.charAt(i) == '1');
+        
+        int limit = s.length() - 1;
+        for (int i = 0; i < s.length(); i++) {
+            boolean flag = true;
+            for (int j = 0; j < s.length(); j++) {
+                if (j < limit && !ones[j] && ones[j+1]) {
+                    ones[j] = true;
+                    ones[j+1] = false;
+                    flag = false;
+                    j++;
                 }
-                else sb.append(s.charAt(i));
             }
-            s = sb.toString();
+            if (flag) return i;
         }
-        return count-1;
+        return s.length();
     }
 }
