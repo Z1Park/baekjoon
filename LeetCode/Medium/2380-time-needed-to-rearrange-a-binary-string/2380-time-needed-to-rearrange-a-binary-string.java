@@ -1,22 +1,20 @@
 class Solution {
     public int secondsToRemoveOccurrences(String s) {
-        boolean[] ones = new boolean[s.length()];
-        for (int i = 0; i < s.length(); i++)
-            ones[i] = (s.charAt(i) == '1');
+        char[] chars = s.toCharArray();
+        int count = 0, limit = chars.length - 1;
         
-        int limit = s.length() - 1;
-        for (int i = 0; i < s.length(); i++) {
-            boolean flag = true;
-            for (int j = 0; j < s.length(); j++) {
-                if (j < limit && !ones[j] && ones[j+1]) {
-                    ones[j] = true;
-                    ones[j+1] = false;
-                    flag = false;
-                    j++;
+        while (true) {
+            boolean swapped = false;
+            for (int i = 0; i < limit; i++) {
+                if (chars[i] == '0' && chars[i+1] == '1') {
+                    swapped = true;
+                    chars[i++] = '1';
+                    chars[i] = '0';
                 }
             }
-            if (flag) return i;
+            if (!swapped) break;
+            count++;
         }
-        return s.length();
+        return count;
     }
 }
