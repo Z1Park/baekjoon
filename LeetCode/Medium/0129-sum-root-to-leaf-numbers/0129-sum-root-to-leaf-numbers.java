@@ -14,21 +14,14 @@
  * }
  */
 class Solution {
-    
-    private int sum = 0;
-    
     public int sumNumbers(TreeNode root) {
-        makeNumber(root, 0);
-        return sum;
+        return makeNumber(root, 0);
     }
     
-    private void makeNumber(TreeNode node, int curr) {
+    private int makeNumber(TreeNode node, int curr) {
+        if (node == null) return 0;
         curr = curr * 10 + node.val;
-        if (node.left == null && node.right == null) {
-            sum += curr;
-            return;
-        }
-        if (node.left != null) makeNumber(node.left, curr);
-        if (node.right != null) makeNumber(node.right, curr);
+        if (node.left == null && node.right == null) return curr;
+        return makeNumber(node.left, curr) + makeNumber(node.right, curr);
     }
 }
