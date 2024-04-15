@@ -1,20 +1,16 @@
 class Solution {
     public int secondsToRemoveOccurrences(String s) {
-        char[] chars = s.toCharArray();
-        int count = 0, limit = chars.length - 1;
-        
-        while (true) {
-            boolean swapped = false;
-            for (int i = 0; i < limit; i++) {
-                if (chars[i] == '0' && chars[i+1] == '1') {
-                    swapped = true;
-                    chars[i++] = '1';
-                    chars[i] = '0';
-                }
+        int zeros = 0, continuous = 0, result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '1') {
+                result = Math.max(result, zeros + continuous);
+                if (zeros > 0) continuous++;
             }
-            if (!swapped) break;
-            count++;
+            else  {
+                zeros++;
+                if (continuous > 0) continuous--;
+            }
         }
-        return count;
+        return result;
     }
 }
