@@ -1,9 +1,9 @@
 class LRUCache {
     
     private int capacity;
-    private int time = 0;
+    private int time = 0, minTime = 0;
     private Map<Integer, List<Integer>> cache = new HashMap<>();
-    private PriorityQueue<int[]> que = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    private Map<Integer, Integer> que = new HashMap<>();
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
@@ -12,7 +12,9 @@ class LRUCache {
     public int get(int key) {
         if (cache.containsKey(key)) {
             List<Integer> cc = cache.get(key);
-            cc.set(1, time++);
+            que.remove(cc.get(1));
+            cc.set(1, ++time);
+            que.put(time, key);
             return cc.get(0);
         }
         return -1;
@@ -22,22 +24,19 @@ class LRUCache {
         time++;
         if (cache.containsKey(key)) {
             List<Integer> cc = cache.get(key);
+            que.remove(cc.get(1));
             cc.set(0, value);
             cc.set(1, time);
+            que.put(time, key);
         }
         else {
             cache.put(key, Arrays.asList(value, time));
-            que.add(new int[]{time, key});
+            que.put(time, key);
             if (cache.size() > capacity) {
-                while (que.size() > capacity) {
-                    int[] tmp = que.poll();
-                    List<Integer> cc = cache.get(tmp[1]);
-                    if (cc.get(1) > tmp[0]) {
-                        tmp[0] = cc.get(1);
-                        que.add(tmp);
-                    }
-                    else cache.remove(tmp[1]);
-                }
+                while (!que.containsKey(minTime))
+                    minTime++;
+                cache.remove(que.get(minTime));
+                que.remove(minTime);
             }
         }
     }
