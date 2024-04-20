@@ -21,15 +21,16 @@ class LRUCache {
     }
     
     public void put(int key, int value) {
+        if (!cache.containsKey(key) && capacity == cache.size()) {
+            while (que.peek()[1] != timeMap.get(que.peek()[0]))
+                que.poll();
+            int[] tmp = que.poll();
+            cache.remove(tmp[0]);
+            timeMap.remove(tmp[0]);
+        }
         que.add(new int[]{key, time});
         cache.put(key, value);
         timeMap.put(key, time);
-        
-        while (cache.size() > capacity) {
-            int[] tmp = que.poll();
-            if (timeMap.get(tmp[0]) == tmp[1])
-                cache.remove(tmp[0]);
-        }
         time++;
     }
 }
