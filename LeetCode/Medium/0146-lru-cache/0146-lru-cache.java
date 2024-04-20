@@ -1,71 +1,36 @@
 class LRUCache {
     
-    private class Node {
-        
-        int key;
-        int value;
-        Node prev;
-        Node next;
-        
-        Node(int key, int value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-    
     private int capacity;
-    private int size = 0;
-    private Node head;
-    private Node tail;
-    private Node[] map = new Node[10_001];
-    
-    
-    private void addNode(Node reference, Node node) {
-        node.next = reference.next;
-        node.prev = reference;
-        node.next.prev = node;
-        reference.next = node;
-    }
-    
-    private void deleteNode(Node node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-    
+    private int time = 0;
+    private Map<Integer, Integer> cache = new HashMap<>();
+    private Map<Integer, Integer> timeMap = new HashMap<>();
+    private Queue<int[]> que = new LinkedList<>();
 
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        head.next = tail;
-        tail.prev = head;
     }
     
     public int get(int key) {
-        if (map[key] == null) return -1;
-        Node node = map[key];
-        deleteNode(node);
-        addNode(head, node);
-        return node.value;
+        if (cache.containsKey(key)) {
+            que.add(new int[]{key, time});
+            timeMap.put(key, time);
+            time++;
+            return cache.get(key);
+        }
+        return -1;
     }
     
-    
     public void put(int key, int value) {
-        if (map[key] == null) {
-            map[key] = new Node(key, value);
-            addNode(head, map[key]);
-            if (size == capacity) {
-                map[tail.prev.key] = null;
-                deleteNode(tail.prev);
-            }
-            else size++;
+        que.add(new int[]{key, time});
+        cache.put(key, value);
+        timeMap.put(key, time);
+        
+        while (cache.size() > capacity) {
+            int[] tmp = que.poll();
+            if (timeMap.get(tmp[0]) == tmp[1])
+                cache.remove(tmp[0]);
         }
-        else {
-            Node node = map[key];
-            node.value = value;
-            deleteNode(node);
-            addNode(head, node);
-        }
+        time++;
     }
 }
 
