@@ -12,6 +12,8 @@ class LRUCache {
     public int get(int key) {
         if (cache.containsKey(key)) {
             List<Integer> cc = cache.get(key);
+            if (minTime == cc.get(1))
+                minTime++;
             que.remove(cc.get(1));
             cc.set(1, ++time);
             que.put(time, key);
@@ -24,6 +26,8 @@ class LRUCache {
         time++;
         if (cache.containsKey(key)) {
             List<Integer> cc = cache.get(key);
+            if (minTime == cc.get(1))
+                minTime++;
             que.remove(cc.get(1));
             cc.set(0, value);
             cc.set(1, time);
