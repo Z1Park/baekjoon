@@ -22,18 +22,8 @@ class Solution {
             int curr = que.poll();
             for (int i = 1; i < 10000; i *= 10) {
                 int tmp = curr % (i * 10) / i;
-                if (tmp == 0) {
-                    checkDP(dp, que, curr + i, curr);
-                    checkDP(dp, que, curr - i + i * 10, curr);
-                }
-                else if (tmp == 9) {
-                    checkDP(dp, que, curr + i - i * 10, curr);
-                    checkDP(dp, que, curr - i, curr);
-                }
-                else {
-                    checkDP(dp, que, curr + i, curr);
-                    checkDP(dp, que, curr - i, curr);
-                }
+                checkDP(dp, que, curr + i - (tmp == 9 ? i * 10 : 0), curr);
+                checkDP(dp, que, curr - i + (tmp == 0 ? i * 10 : 0), curr);
             }
         }
         return dp[target] == Integer.MAX_VALUE ? -1 : dp[target];
