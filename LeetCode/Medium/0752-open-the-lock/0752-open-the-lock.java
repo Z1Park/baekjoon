@@ -10,11 +10,9 @@ class Solution {
     public int openLock(String[] deadends, String t) {
         int[] dp = new int[10001];
         Arrays.fill(dp, Integer.MAX_VALUE);
-        for (String deadend : deadends) {
-            int tmp = Integer.parseInt(deadend);
-            dp[tmp] = -1;
-            if (tmp == 0) return -1;
-        }
+        for (String deadend : deadends)
+            dp[Integer.parseInt(deadend)] = -1;
+        if (dp[0] == -1) return -1;
         dp[0] = 0;
         
         int target = Integer.parseInt(t);
