@@ -1,16 +1,10 @@
 class Solution {
     public int singleNumber(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int num : nums) {
-            if (!map.containsKey(num)) map.put(num, 1);
-            else {
-                int count = map.get(num);
-                if (count < 2) map.put(num, count+1);
-                else map.remove(num);
-            }
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length; i += 3) {
+            if (nums[i] == nums[i-1]) continue;
+            return nums[i-1];
         }
-        for (int key : map.keySet())
-            return key;
-        return -1;
+        return nums[nums.length-1];
     }
 }
