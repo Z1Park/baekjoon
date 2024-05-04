@@ -1,25 +1,19 @@
 class Solution {
     
     private int N, M;
+    private int[] dr = {0, 1, 0, -1, 1, 1, -1, -1};
+    private int[] dc = {1, 0, -1, 0, 1, -1, 1, -1};
     
-    private int[][] getCountBoard(char[][] board) {
-        int[][] prefix = new int[N+1][M+1];
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                prefix[i+1][j+1] = prefix[i+1][j] + prefix[i][j+1] - prefix[i][j] + (board[i][j] == 'M' ? 1 : 0);
-            }
+    private int getMineCount(char[][] board, int r, int c) {
+        int mineCount = 0;
+        for (int i = 0; i < 8; i++) {
+            int nr = r + dr[i], nc = c + dc[i];
+            if (nr < 0 || nr >= N || nc < 0 || nc >= M)
+                continue;
+            if (board[nr][nc] == 'M')
+                mineCount++;
         }
-        
-        int[][] countBoard = new int[N][M];
-        for (int i = 1; i <= N; i++) {
-            for (int j = 1; j <= M; j++) {
-                if (board[i-1][j-1] == 'M') continue;
-                int top = Math.max(0, i-2), left = Math.max(0, j-2);
-                int bottom = Math.min(N, i+1), right = Math.min(M, j+1);
-                countBoard[i-1][j-1] = prefix[bottom][right] - prefix[bottom][left] - prefix[top][right] + prefix[top][left];
-            }
-        }
-        return countBoard;
+        return mineCount;
     }
     
     public char[][] updateBoard(char[][] board, int[] click) {
@@ -30,27 +24,28 @@ class Solution {
         
         N = board.length;
         M = board[0].length;
-        int[] dr = {0, 1, 0, -1, 1, 1, -1, -1};
-        int[] dc = {1, 0, -1, 0, 1, -1, 1, -1};
-        int[][] countBoard = getCountBoard(board);
         
+        int mineCount = getMineCount(board, click[0], click[1]);
+        if (mineCount == 0) board[click[0]][click[1]] = 'B';
+        else board[click[0]][click[1]] = (char)(mineCount + '0');
         Queue<int[]> que = new LinkedList<>();
-        que.add(click);
-        board[click[0]][click[1]] = (countBoard[click[0]][click[1]] == 0 ? 'B' : (char)(countBoard[click[0]][click[1]] + '0'));
+        que.add(new int[]{click[0], click[1], mineCount});
         while (!que.isEmpty()) {
             int[] tmp = que.poll();
-            int r = tmp[0], c = tmp[1];
-            if (countBoard[r][c] == 0) {
+            int r = tmp[0], c = tmp[1], count = tmp[2];
+            
+            if (count == 0) {
                 for (int i = 0; i < 8; i++) {
                     int nr = r + dr[i], nc = c + dc[i];
                     if (nr < 0 || nr >= N || nc < 0 || nc >= M)
                         continue;
                     if (board[nr][nc] == 'E') {
-                        if (countBoard[nr][nc] == 0) {
+                        int next = getMineCount(board, nr, nc);
+                        if (next == 0) {
                             board[nr][nc] = 'B';
-                            que.add(new int[]{nr, nc});
+                            que.add(new int[]{nr, nc, next});
                         }
-                        else board[nr][nc] = (char)(countBoard[nr][nc] + '0');
+                        else board[nr][nc] = (char)(next + '0');
                     }
                 }
             }
