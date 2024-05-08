@@ -11,16 +11,6 @@ class Solution {
     }
     
     public int evalRPN(String[] tokens) {
-        // Deque<Integer> stk = new ArrayDeque<>();
-        // for (String token : tokens) {
-        //     if (Character.isDigit(token.charAt(token.length()-1)))
-        //         stk.add(Integer.valueOf(token));
-        //     else  {
-        //         int num2 = stk.pollLast(), num1 = stk.pollLast();
-        //         stk.add(calculate(num1, num2, token));
-        //     }
-        // }
-        // return stk.poll();
         int[] stk = new int[6667];
         int idx = 0;
         for (String token : tokens) {
