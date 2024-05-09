@@ -10,27 +10,20 @@ class Solution {
             graph[pr[1]].add(pr[0]);
         }
         
-        boolean[] visit = new boolean[numCourses];
         Queue<Integer> que = new LinkedList<>();
         for (int i = 0; i < numCourses; i++) {
-            if (counts[i] == 0) {
-                visit[i] = true;
-                que.add(i);
-            }
+            if (counts[i] == 0) que.add(i);
         }
         while (!que.isEmpty()) {
             int curr = que.poll();
             for (int next : graph[curr]) {
                 counts[next]--;
-                if (counts[next] == 0 && !visit[next]) {
-                    que.add(next);
-                    visit[next] = true;
-                }
+                if (counts[next] == 0) que.add(next);
             }
         }
         
         for (int i = 0; i < numCourses; i++) {
-            if (!visit[i]) return false;
+            if (counts[i] != 0) return false;
         }
         return true;
     }
