@@ -30,7 +30,7 @@ class Solution {
         }
         
         for (int i = 0; i < numCourses; i++) {
-            if (counts[i] != 0) return false;
+            if (!visit[i]) return false;
         }
         return true;
     }
