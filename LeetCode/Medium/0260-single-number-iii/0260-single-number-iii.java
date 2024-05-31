@@ -1,13 +1,10 @@
 class Solution {
     public int[] singleNumber(int[] nums) {
-        if (nums.length == 2) return nums;
-        Arrays.sort(nums);
-        int[] result = new int[2];
-        int i = 0, idx = 0, n = nums.length;
-        while (i < n) {
-            if (i < n - 1 && nums[i] == nums[i+1]) i += 2;
-            else result[idx++] = nums[i++];
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            if (set.contains(num)) set.remove(num);
+            else set.add(num);
         }
-        return result;
+        return set.stream().mapToInt(Integer::intValue).toArray();
     }
 }
